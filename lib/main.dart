@@ -7,11 +7,16 @@ import 'package:auth_flow_app/features/auth/presentation/bloc/session/session_st
 import 'package:auth_flow_app/features/auth/presentation/screens/home_screen.dart';
 import 'package:auth_flow_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:auth_flow_app/features/auth/presentation/screens/signup_screen.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await dotenv.load(fileName: 'config.env');
+  await Supabase.initialize(url: dotenv.env['SUPABASE_URL']!, publishableKey: dotenv.env['SUPABASE_PUBLISHABLE_KEY']!);
   await initDependencies();
+  final response = await Supabase.instance.client.auth.signUp(email: 'zomta3imp@gmail.com', password: '12341234');
+  print(response);
 
   runApp(const MyApp());
 }
@@ -26,10 +31,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Auth Flow App',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-          useMaterial3: true,
-        ),
+        theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue), useMaterial3: true),
         home: const AuthWrapper(),
         routes: {
           '/login': (context) => const LoginPage(),
@@ -49,11 +51,7 @@ class AuthWrapper extends StatelessWidget {
     return BlocBuilder<SessionBloc, SessionState>(
       builder: (context, state) {
         if (state is SessionLoading || state is SessionInitial) {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return const Scaffold(body: Center(child: CircularProgressIndicator()));
         } else if (state is Authenticated) {
           return const HomePage();
         } else {

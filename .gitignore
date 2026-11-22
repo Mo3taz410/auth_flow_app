@@ -44,9 +44,9 @@ app.*.map.json
 /android/app/release
 
 # Environment files - NEVER commit these!
-.env
-.env.local
-.env.production
+config.env
+config.env.local
+config.env.production
 
 # iOS/macOS specific
 **/ios/**/*.mode1v3
