@@ -6,23 +6,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class EmailAuthBloc extends Bloc<EmailAuthEvent, EmailAuthState> {
   final EmailAuthRepository emailAuthRepository;
 
-  EmailAuthBloc({required this.emailAuthRepository})
-    : super(const EmailAuthInitial()) {
+  EmailAuthBloc({required this.emailAuthRepository}) : super(const EmailAuthInitial()) {
     on<SignUpWithEmailEvent>(_onSignUpWithEmail);
     on<SignInWithEmailEvent>(_onSignInWithEmail);
     on<ResetPasswordEvent>(_onResetPassword);
     on<SendMagicLinkEvent>(_onSendMagicLink);
   }
 
-  Future<void> _onSignUpWithEmail(
-    SignUpWithEmailEvent event,
-    Emitter<EmailAuthState> emit,
-  ) async {
+  Future<void> _onSignUpWithEmail(SignUpWithEmailEvent event, Emitter<EmailAuthState> emit) async {
     emit(const EmailAuthLoading());
 
     final result = await emailAuthRepository.signUpWithEmail(
       email: event.email,
       password: event.password,
+      displayName: event.displayName,
     );
 
     result.fold(
@@ -31,16 +28,10 @@ class EmailAuthBloc extends Bloc<EmailAuthEvent, EmailAuthState> {
     );
   }
 
-  Future<void> _onSignInWithEmail(
-    SignInWithEmailEvent event,
-    Emitter<EmailAuthState> emit,
-  ) async {
+  Future<void> _onSignInWithEmail(SignInWithEmailEvent event, Emitter<EmailAuthState> emit) async {
     emit(const EmailAuthLoading());
 
-    final result = await emailAuthRepository.signInWithEmail(
-      email: event.email,
-      password: event.password,
-    );
+    final result = await emailAuthRepository.signInWithEmail(email: event.email, password: event.password);
 
     result.fold(
       (failure) => emit(EmailAuthError(message: failure.message)),
@@ -48,10 +39,7 @@ class EmailAuthBloc extends Bloc<EmailAuthEvent, EmailAuthState> {
     );
   }
 
-  Future<void> _onResetPassword(
-    ResetPasswordEvent event,
-    Emitter<EmailAuthState> emit,
-  ) async {
+  Future<void> _onResetPassword(ResetPasswordEvent event, Emitter<EmailAuthState> emit) async {
     emit(const EmailAuthLoading());
 
     final result = await emailAuthRepository.resetPassword(email: event.email);
@@ -62,10 +50,7 @@ class EmailAuthBloc extends Bloc<EmailAuthEvent, EmailAuthState> {
     );
   }
 
-  Future<void> _onSendMagicLink(
-    SendMagicLinkEvent event,
-    Emitter<EmailAuthState> emit,
-  ) async {
+  Future<void> _onSendMagicLink(SendMagicLinkEvent event, Emitter<EmailAuthState> emit) async {
     emit(const EmailAuthLoading());
 
     final result = await emailAuthRepository.sendMagicLink(email: event.email);

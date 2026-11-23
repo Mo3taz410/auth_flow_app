@@ -10,11 +10,12 @@ abstract class EmailAuthEvent extends Equatable {
 class SignUpWithEmailEvent extends EmailAuthEvent {
   final String email;
   final String password;
+  final String displayName;
 
-  const SignUpWithEmailEvent({required this.email, required this.password});
+  const SignUpWithEmailEvent({required this.email, required this.password, required this.displayName});
 
   @override
-  List<Object?> get props => [email, password];
+  List<Object?> get props => [email, password, displayName];
 }
 
 class SignInWithEmailEvent extends EmailAuthEvent {

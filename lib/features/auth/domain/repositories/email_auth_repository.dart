@@ -6,12 +6,10 @@ abstract class EmailAuthRepository {
   Future<Either<Failure, UserEntity>> signUpWithEmail({
     required String email,
     required String password,
+    required String displayName,
   });
 
-  Future<Either<Failure, UserEntity>> signInWithEmail({
-    required String email,
-    required String password,
-  });
+  Future<Either<Failure, UserEntity>> signInWithEmail({required String email, required String password});
 
   Future<Either<Failure, void>> resetPassword({required String email});
 

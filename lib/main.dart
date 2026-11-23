@@ -15,9 +15,6 @@ void main() async {
   await dotenv.load(fileName: 'config.env');
   await Supabase.initialize(url: dotenv.env['SUPABASE_URL']!, publishableKey: dotenv.env['SUPABASE_PUBLISHABLE_KEY']!);
   await initDependencies();
-  final response = await Supabase.instance.client.auth.signUp(email: 'zomta3imp@gmail.com', password: '12341234');
-  print(response);
-
   runApp(const MyApp());
 }
 

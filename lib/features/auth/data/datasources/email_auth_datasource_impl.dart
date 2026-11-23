@@ -1,5 +1,5 @@
 import 'package:auth_flow_app/core/error/exceptions.dart';
-import 'package:auth_flow_app/features/auth/data/datasources/auth_client.dart';
+import 'package:auth_flow_app/core/network/supabase/auth_client.dart';
 import 'package:auth_flow_app/features/auth/data/datasources/email_auth_datasource.dart';
 import 'package:auth_flow_app/features/auth/data/models/user_model.dart';
 
@@ -12,10 +12,14 @@ class EmailAuthDataSourceImpl implements EmailAuthDataSource {
   Future<UserModel> signUpWithEmail({
     required String email,
     required String password,
+    required String displayName,
   }) async {
     try {
-      // TODO: Implement signUpWithEmail
-      throw UnimplementedError('signUpWithEmail not implemented yet');
+      final authResponse = await _authClient.signUp(email: email, password: password, displayName: displayName);
+      if (authResponse.user == null) {
+        throw AuthException('Failed to sign up: User is null');
+      }
+      return UserModel.fromSupabaseUser(authResponse.user!);
     } on AuthException {
       rethrow;
     } catch (e) {
@@ -24,10 +28,7 @@ class EmailAuthDataSourceImpl implements EmailAuthDataSource {
   }
 
   @override
-  Future<UserModel> signInWithEmail({
-    required String email,
-    required String password,
-  }) async {
+  Future<UserModel> signInWithEmail({required String email, required String password}) async {
     try {
       // TODO: Implement signInWithEmail
       throw UnimplementedError('signInWithEmail not implemented yet');
