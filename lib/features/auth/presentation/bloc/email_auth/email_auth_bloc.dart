@@ -10,6 +10,8 @@ class EmailAuthBloc extends Bloc<EmailAuthEvent, EmailAuthState> {
     on<SignUpWithEmailEvent>(_onSignUpWithEmail);
     on<SignInWithEmailEvent>(_onSignInWithEmail);
     on<ResetPasswordEvent>(_onResetPassword);
+    on<VerifyOtpEvent>(_onVerifyOtp);
+    on<UpdatePasswordEvent>(_onUpdatePassword);
     on<SendMagicLinkEvent>(_onSendMagicLink);
   }
 
@@ -46,7 +48,22 @@ class EmailAuthBloc extends Bloc<EmailAuthEvent, EmailAuthState> {
 
     result.fold(
       (failure) => emit(EmailAuthError(message: failure.message)),
-      (_) => emit(const EmailSent(message: 'Password reset email sent')),
+      (_) => emit(EmailSent(message: 'Password reset email sent', email: event.email)),
+    );
+  }
+
+  Future<void> _onVerifyOtp(VerifyOtpEvent event, Emitter<EmailAuthState> emit) async {
+    emit(const EmailAuthLoading());
+    final result = await emailAuthRepository.verifyOtp(otp: event.otp, email: event.email);
+    result.fold((failure) => emit(EmailAuthError(message: failure.message)), (_) => emit(PasswordOtpVerified()));
+  }
+
+  Future<void> _onUpdatePassword(UpdatePasswordEvent event, Emitter<EmailAuthState> emit) async {
+    emit(const EmailAuthLoading());
+    final result = await emailAuthRepository.updatePassword(password: event.password);
+    result.fold(
+      (failure) => emit(EmailAuthError(message: failure.message)),
+      (_) => emit(const PasswordUpdated(message: 'Password updated successfully')),
     );
   }
 
@@ -57,7 +74,7 @@ class EmailAuthBloc extends Bloc<EmailAuthEvent, EmailAuthState> {
 
     result.fold(
       (failure) => emit(EmailAuthError(message: failure.message)),
-      (_) => emit(const EmailSent(message: 'Magic link sent to your email')),
+      (_) => emit(EmailSent(message: 'Magic link sent to your email', email: event.email)),
     );
   }
 }

@@ -13,7 +13,9 @@ abstract class EmailAuthRepository {
 
   Future<Either<Failure, void>> resetPassword({required String email});
 
-  Future<Either<Failure, void>> verifyEmail({required String token});
+  Future<Either<Failure, UserEntity>> verifyOtp({required String otp, required String email});
+
+  Future<Either<Failure, void>> updatePassword({required String password});
 
   Future<Either<Failure, void>> sendMagicLink({required String email});
 }

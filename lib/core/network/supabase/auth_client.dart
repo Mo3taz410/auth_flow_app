@@ -3,5 +3,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 abstract class AuthClient {
   Future<AuthResponse> signUpWithEmail({required String email, required String password, required String displayName});
   Future<AuthResponse> signInWithEmail({required String email, required String password});
-
+  Future<void> resetPassword({required String email});
+  Future<AuthResponse> verifyOtp({required String otp, required String email});
+  Future<UserResponse> updatePassword({required String password});
+  Future<void> sendMagicLink({required String email});
 }

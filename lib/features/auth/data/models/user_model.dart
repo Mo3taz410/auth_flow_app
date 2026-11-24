@@ -13,7 +13,6 @@ class UserModel extends UserEntity {
   });
 
   factory UserModel.fromSupabaseUser(User user) {
-    print(user);
     return UserModel(
       id: user.id,
       email: user.email ?? '',
