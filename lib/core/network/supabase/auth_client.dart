@@ -1,5 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class AuthClient {
-  Future<AuthResponse> signUp({required String email, required String password, required String displayName});
+  Future<AuthResponse> signUpWithEmail({required String email, required String password, required String displayName});
+  Future<AuthResponse> signInWithEmail({required String email, required String password});
+
 }

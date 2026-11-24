@@ -15,7 +15,11 @@ class EmailAuthDataSourceImpl implements EmailAuthDataSource {
     required String displayName,
   }) async {
     try {
-      final authResponse = await _authClient.signUp(email: email, password: password, displayName: displayName);
+      final authResponse = await _authClient.signUpWithEmail(
+        email: email,
+        password: password,
+        displayName: displayName,
+      );
       if (authResponse.user == null) {
         throw AuthException('Failed to sign up: User is null');
       }
@@ -30,8 +34,11 @@ class EmailAuthDataSourceImpl implements EmailAuthDataSource {
   @override
   Future<UserModel> signInWithEmail({required String email, required String password}) async {
     try {
-      // TODO: Implement signInWithEmail
-      throw UnimplementedError('signInWithEmail not implemented yet');
+      final authResponse = await _authClient.signInWithEmail(email: email, password: password);
+      if (authResponse.user == null) {
+        throw AuthException('Failed to sign in: User is null');
+      }
+      return UserModel.fromSupabaseUser(authResponse.user!);
     } on AuthException {
       rethrow;
     } catch (e) {
@@ -42,7 +49,6 @@ class EmailAuthDataSourceImpl implements EmailAuthDataSource {
   @override
   Future<void> resetPassword({required String email}) async {
     try {
-      // TODO: Implement resetPassword
       throw UnimplementedError('resetPassword not implemented yet');
     } on AuthException {
       rethrow;

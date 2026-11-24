@@ -6,7 +6,16 @@ class AuthClientImpl implements AuthClient {
   AuthClientImpl(this.goTrueClient);
 
   @override
-  Future<AuthResponse> signUp({required String email, required String password, required String displayName}) async {
+  Future<AuthResponse> signUpWithEmail({
+    required String email,
+    required String password,
+    required String displayName,
+  }) async {
     return await goTrueClient.signUp(email: email, password: password, data: {'display_name': displayName});
+  }
+
+  @override
+  Future<AuthResponse> signInWithEmail({required String email, required String password}) async {
+    return await goTrueClient.signInWithPassword(email: email, password: password);
   }
 }
