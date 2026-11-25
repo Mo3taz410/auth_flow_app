@@ -36,6 +36,9 @@ dependencies:
   # .ENV Configuration Loading
   flutter_dotenv: ^6.0.2
 
+  # PIN / OTP Input
+  pinput: ^7.0.0
+
 
 dev_dependencies:
   flutter_test:

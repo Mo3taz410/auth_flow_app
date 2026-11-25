@@ -6,6 +6,7 @@ import 'package:auth_flow_app/features/auth/presentation/bloc/session/session_ev
 import 'package:auth_flow_app/features/auth/presentation/bloc/session/session_state.dart';
 import 'package:auth_flow_app/features/auth/presentation/screens/home_screen.dart';
 import 'package:auth_flow_app/features/auth/presentation/screens/login_screen.dart';
+import 'package:auth_flow_app/features/auth/presentation/screens/reset_password_screen.dart';
 import 'package:auth_flow_app/features/auth/presentation/screens/signup_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
           '/login': (context) => const LoginPage(),
           '/signup': (context) => const SignupPage(),
           '/home': (context) => const HomePage(),
+          '/forgot-password': (context) => const ResetPasswordPage(),
         },
       ),
     );
